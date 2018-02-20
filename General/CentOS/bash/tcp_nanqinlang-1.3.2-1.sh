@@ -39,9 +39,9 @@ directory(){
 
 check_kernel(){
 	# check 4.12.10 already installed or not
-	already_image=`rpm -qa | grep kernel-4.12.10`
-	already_devel=`rpm -qa | grep kernel-devel-4.12.10`
-	already_headers=`rpm -qa | grep kernel-headers-4.12.10`
+	already_image=`rpm -qa | grep kernel-4.11.6`
+	already_devel=`rpm -qa | grep kernel-devel-4.11.6`
+	already_headers=`rpm -qa | grep kernel-headers-4.11.6`
 
 	delete_surplus_1
 
@@ -65,32 +65,32 @@ check_kernel(){
 }
 
 delete_surplus_1(){
-	#surplus_image=`rpm -qa | grep kernel | awk '{print $2}' | grep -v "4.12.10" | wc -l`
-	#surplus_devel=`rpm -qa | grep kernel-devel | awk '{print $2}' | grep -v "4.12.10" | wc -l`
-	#surplus_headers=`rpm -qa | grep kernel-headers | awk '{print $2}' | grep -v "4.12.10" | wc -l`
+	#surplus_image=`rpm -qa | grep kernel | awk '{print $2}' | grep -v "4.11.6" | wc -l`
+	#surplus_devel=`rpm -qa | grep kernel-devel | awk '{print $2}' | grep -v "4.11.6" | wc -l`
+	#surplus_headers=`rpm -qa | grep kernel-headers | awk '{print $2}' | grep -v "4.11.6" | wc -l`
 
-	surplus_count=`rpm -qa | grep kernel | grep -v "4.12.10" | wc -l`
-	surplus_sort_1=`rpm -qa | grep kernel | grep -v "4.12.10"`
+	surplus_count=`rpm -qa | grep kernel | grep -v "4.11.6" | wc -l`
+	surplus_sort_1=`rpm -qa | grep kernel | grep -v "4.11.6"`
 
 	while [[ "${surplus_count}" > "1" ]]
 	do
 		yum remove -y ${surplus_sort_1}
-		surplus_count=`rpm -qa | grep kernel | grep -v "4.12.10" | wc -l`
-		surplus_sort_1=`rpm -qa | grep kernel | grep -v "4.12.10"`
+		surplus_count=`rpm -qa | grep kernel | grep -v "4.11.6" | wc -l`
+		surplus_sort_1=`rpm -qa | grep kernel | grep -v "4.11.6"`
 	done
 }
 
 delete_surplus_2(){
-	current=`uname -r | grep -v "4.12.10"`
+	current=`uname -r | grep -v "4.11.6"`
 	if [[ -z "${current}" ]]; then
-		surplus_sort_2=`rpm -qa | grep kernel | grep -v "4.12.10" | grep -v "dracut-kernel-004-409.el6_8.2.noarch"`
+		surplus_sort_2=`rpm -qa | grep kernel | grep -v "4.11.6" | grep -v "dracut-kernel-004-409.el6_8.2.noarch"`
 		while [[ ! -z "${surplus_sort_2}" ]]
 		do
 			 yum remove -y ${surplus_sort_2}
-			 surplus_sort_2=`rpm -qa | grep kernel | grep -v "4.12.10" | grep -v "dracut-kernel-004-409.el6_8.2.noarch"`
+			 surplus_sort_2=`rpm -qa | grep kernel | grep -v "4.11.6" | grep -v "dracut-kernel-004-409.el6_8.2.noarch"`
 		done
 	else
-		echo -e "${Error} current running kernel is not v4.12.10, please check !"
+		echo -e "${Error} current running kernel is not v4.11.6, please check !"
 	fi
 }
 
@@ -100,21 +100,21 @@ delete_surplus_2(){
 # my backup: https://github.com/nanqinlang/CentOS-kernel
 install_image(){
 	#[[ ! -f kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget http://elrepo.mirror.angkasa.id/elrepo/archive/kernel/el${bit}/x86_64/RPMS/kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/nanqinlang/CentOS-kernel/master/kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} ==image download failed, please check !" && exit 1
-	yum  install -y kernel-ml-4.12.10-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-4.11.6-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/nanqinlang/CentOS-kernel/master/kernel-ml-4.11.6-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-4.11.6-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} ==image download failed, please check !" && exit 1
+	yum  install -y kernel-ml-4.11.6-1.el${bit}.elrepo.x86_64.rpm
 }
 install_devel(){
 	#[[ ! -f kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget http://elrepo.mirror.angkasa.id/elrepo/archive/kernel/el${bit}/x86_64/RPMS/kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/nanqinlang/CentOS-kernel/master/kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} devel download failed, please check !" && exit 1
-	yum  install -y kernel-ml-devel-4.12.10-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-devel-4.11.6-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/nanqinlang/CentOS-kernel/master/kernel-ml-devel-4.11.6-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-devel-4.11.6-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} devel download failed, please check !" && exit 1
+	yum  install -y kernel-ml-devel-4.11.6-1.el${bit}.elrepo.x86_64.rpm
 }
 install_headers(){
 	#[[ ! -f kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget http://elrepo.mirror.angkasa.id/elrepo/archive/kernel/el${bit}/x86_64/RPMS/kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/nanqinlang/CentOS-kernel/master/kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
-	[[ ! -f kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} headers download failed, please check !" && exit 1
-	yum  install -y kernel-ml-headers-4.12.10-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-headers-4.11.6-1.el${bit}.elrepo.x86_64.rpm ]] && wget https://raw.githubusercontent.com/nanqinlang/CentOS-kernel/master/kernel-ml-headers-4.11.6-1.el${bit}.elrepo.x86_64.rpm
+	[[ ! -f kernel-ml-headers-4.11.6-1.el${bit}.elrepo.x86_64.rpm ]] && echo -e "${Error} headers download failed, please check !" && exit 1
+	yum  install -y kernel-ml-headers-4.11.6-1.el${bit}.elrepo.x86_64.rpm
 }
 
 update-grub(){
